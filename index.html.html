@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nilay Gunari</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{cursor:none !important;margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d0d0d;--bg2:#141414;--bg3:#1c1c1c;
+  --border:rgba(255,255,255,0.07);--bh:rgba(255,255,255,0.14);
+  --text:#eeebe5;--t2:#666660;--t3:#c8f060;
+  --a:#c8f060;--a2:#e8a050;
+}
+.lm{
+  --bg:#f4f1ec;--bg2:#edeae3;--bg3:#e4e1da;
+  --border:rgba(0,0,0,0.08);--bh:rgba(0,0,0,0.16);
+  --text:#18180f;--t2:#777770;--t3:#c8c8b8;
+  --a:#4a7a00;--a2:#a04800;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background .35s,color .35s;}
+
+/* SKATER CURSOR */
+#sc{position:fixed;pointer-events:none;z-index:99999;top:0;left:0;transform:translate(-50%,-50%);will-change:left,top;}
+#sc svg{display:block;filter:drop-shadow(0 2px 8px rgba(200,240,96,.2));transition:transform .18s ease;}
+@keyframes wspin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.wh{transform-box:fill-box;transform-origin:center;animation:wspin .4s linear infinite;animation-play-state:paused;}
+#sc.mv .wh{animation-play-state:running;}
+.wmark{position:fixed;pointer-events:none;z-index:99998;width:3px;height:3px;border-radius:50%;opacity:.5;animation:wf .8s forwards;}
+@keyframes wf{to{opacity:0;transform:scale(.3);}}
+
+/* PAGES */
+.pg{display:none;min-height:100vh;}
+.pg.active{display:block;}
+
+/* PAGE TRANSITION */
+.pg{opacity:0;transition:opacity .4s ease;}
+.pg.active{opacity:1;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:400;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 60px;
+  background:linear-gradient(to bottom,var(--bg) 60%,transparent);
+  transition:background .35s;
+}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:2px;color:var(--text);text-decoration:none;text-transform:uppercase;}
+.navr{display:flex;align-items:center;gap:32px;}
+.navr a{font-size:11px;letter-spacing:1.5px;color:var(--t2);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.navr a:hover{color:var(--text);}
+.navr a.active{color:var(--a);}
+.tbtn{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.5px;padding:6px 16px;border:1px solid var(--border);background:transparent;color:var(--t2);border-radius:20px;text-transform:uppercase;transition:all .2s;}
+.tbtn:hover{border-color:var(--bh);color:var(--text);}
+
+/* LAYOUT */
+.wrap{width:100%;padding:0 60px;}
+
+/* ─── HOME PAGE ─── */
+#home-page{}
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:110px;padding-bottom:80px;position:relative;z-index:10;}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--t2);text-transform:uppercase;margin-bottom:32px;display:flex;align-items:center;gap:12px;opacity:0;animation:up .6s .1s forwards;}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--t2);}
+.hname{font-family:'Syne',sans-serif;font-weight:800;line-height:.88;letter-spacing:-2px;margin-bottom:36px;opacity:0;animation:up .6s .25s forwards;}
+.hname .r1{font-size:clamp(64px,7.5vw,100px);color:var(--text);display:block;}
+.hname .r2{font-size:clamp(64px,7.5vw,100px);display:block;}
+.hname .dim{color:var(--t3);}
+.hname .acc{color:var(--a);}
+.hsub{font-size:15px;color:var(--t2);line-height:1.75;max-width:500px;margin-bottom:36px;opacity:0;animation:up .6s .4s forwards;}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:44px;opacity:0;animation:up .6s .55s forwards;}
+.pill{font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 13px;border:1px solid var(--border);border-radius:20px;color:var(--t2);}
+.pill.pa{border-color:rgba(200,240,96,.4);color:var(--a);}
+.pill.pb{border-color:rgba(232,160,80,.4);color:var(--a2);}
+.hbtns{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:up .6s .7s forwards;}
+.bsolid{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 28px;background:var(--a);color:#0d0d0d;border:none;border-radius:3px;text-decoration:none;display:inline-block;transition:opacity .2s;}
+.bsolid:hover{opacity:.85;}
+.bghost{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 28px;background:transparent;color:var(--t2);border:1px solid var(--border);border-radius:3px;text-decoration:none;display:inline-block;transition:all .2s;}
+.bghost:hover{border-color:var(--bh);color:var(--text);}
+.scroll-hint{position:absolute;bottom:36px;display:flex;align-items:center;gap:10px;font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;opacity:0;animation:up .6s 1.1s forwards;}
+.scroll-hint::before{content:'';width:36px;height:1px;background:var(--t3);}
+
+/* TICKER */
+.ticker{position:relative;z-index:10;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:11px 0;}
+.ttrack{display:inline-flex;white-space:nowrap;animation:tick 24s linear infinite;}
+.titem{font-family:'Syne',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--t3);padding:0 24px;}
+.tsep{color:var(--a);padding:0 4px;}
+
+/* SECTIONS */
+.sec{position:relative;z-index:10;padding:90px 0;}
+.slabel{font-size:10px;letter-spacing:3px;color:var(--a);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.slabel::before{content:'';width:22px;height:1px;background:var(--a);}
+.stitle{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,3.5vw,44px);line-height:1;letter-spacing:-1px;margin-bottom:48px;}
+.divider{height:1px;background:var(--border);position:relative;z-index:10;}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.abody p{font-size:14px;color:var(--t2);line-height:1.85;margin-bottom:14px;}
+.abody strong{color:var(--text);font-weight:500;}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px;}
+.stat{border:1px solid var(--border);border-radius:6px;padding:18px;transition:border-color .25s;}
+.stat:hover{border-color:var(--bh);}
+.sn{font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:var(--a);line-height:1;}
+.sl{font-size:9px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-top:4px;}
+.hobs{display:flex;flex-direction:column;gap:10px;}
+.hob{border:1px solid var(--border);border-radius:6px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;transition:all .25s;}
+.hob:hover{border-color:var(--bh);background:var(--bg2);}
+.hico{width:34px;height:34px;min-width:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:15px;}
+.hn{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;}
+.hd{font-size:11px;color:var(--t2);line-height:1.65;}
+
+/* HOME PROJECTS PREVIEW */
+.pfeat{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px;display:grid;grid-template-columns:300px 1fr;transition:border-color .25s;width:100%;}
+.pfeat:hover{border-color:var(--bh);}
+.pthumb{background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:190px;}
+.ptlabel{font-family:'Syne',sans-serif;font-weight:800;font-size:52px;color:var(--t3);opacity:.35;position:relative;z-index:1;}
+.pglow{position:absolute;inset:0;opacity:.1;}
+.pbadge{position:absolute;top:10px;left:10px;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid;z-index:2;font-family:'Inter',sans-serif;}
+.bg{border-color:var(--a);color:var(--a);}
+.bo{border-color:var(--a2);color:var(--a2);}
+.bw{border-color:var(--border);color:var(--t2);}
+.pbody{padding:26px 30px;display:flex;flex-direction:column;justify-content:center;}
+.ptitle{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:10px;color:var(--text);}
+.pdesc{font-size:12px;color:var(--t2);line-height:1.75;margin-bottom:16px;}
+.plink{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);text-decoration:none;border-bottom:1px solid var(--t3);padding-bottom:1px;transition:all .2s;font-family:'Inter',sans-serif;width:fit-content;display:inline-block;}
+.plink:hover{color:var(--text);border-color:var(--t2);}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;width:100%;}
+.pcard{border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .25s;}
+.pcard:hover{border-color:var(--bh);background:var(--bg2);}
+.pcthumb{height:110px;background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.pctl{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--t3);opacity:.4;}
+.pcbody{padding:14px 16px;}
+.pctitle{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-bottom:4px;}
+.pcdesc{font-size:11px;color:var(--t2);line-height:1.6;}
+.psmall{border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:10px;transition:border-color .25s;width:100%;}
+.psmall:hover{border-color:var(--bh);}
+.view-all-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;}
+.view-all-btn{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border:1px solid var(--border);border-radius:3px;color:var(--t2);text-decoration:none;transition:all .2s;font-family:'Inter',sans-serif;}
+.view-all-btn:hover{border-color:var(--a);color:var(--a);}
+
+/* SKILLS */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+.sgtitle{font-size:10px;letter-spacing:2px;color:var(--t2);text-transform:uppercase;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-weight:700;}
+.skrow{margin-bottom:14px;}
+.skname{font-size:11px;color:var(--t2);margin-bottom:6px;display:flex;justify-content:space-between;}
+.sktrack{height:2px;background:var(--bg3);border-radius:1px;overflow:hidden;}
+.skbar{height:100%;background:var(--a);border-radius:1px;transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(.16,1,.3,1);}
+.skbar.b{background:var(--a2);}
+.tools{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;}
+.ttag{font-size:10px;padding:4px 12px;border:1px solid var(--border);border-radius:20px;color:var(--t2);}
+
+/* CONTACT */
+.ctitle{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(44px,6vw,72px);line-height:.9;letter-spacing:-2px;margin-bottom:22px;}
+.ctitle .md{color:var(--t3);}
+.socrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:36px;}
+.soclink{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border:1px solid var(--border);border-radius:3px;color:var(--t2);text-decoration:none;transition:all .2s;}
+.soclink:hover{border-color:var(--bh);color:var(--text);}
+
+/* ─── WORK PAGE ─── */
+#work-page{}
+#work-hero{padding-top:140px;padding-bottom:60px;position:relative;z-index:10;}
+.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(48px,6vw,80px);line-height:.92;letter-spacing:-2px;margin-bottom:20px;opacity:0;animation:up .6s .2s forwards;}
+.page-title span{color:var(--a);}
+.page-sub{font-size:14px;color:var(--t2);line-height:1.7;max-width:520px;opacity:0;animation:up .6s .35s forwards;}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:36px;opacity:0;animation:up .6s .45s forwards;}
+.ftab{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border:1px solid var(--border);border-radius:20px;color:var(--t2);transition:all .2s;font-family:'Inter',sans-serif;}
+.ftab:hover,.ftab.on{border-color:var(--a);color:var(--a);background:rgba(200,240,96,.05);}
+
+/* WORK PAGE CARDS */
+.feat-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.feat-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .25s;}
+.feat-card:hover{border-color:var(--bh);}
+.feat-thumb{width:100%;background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.feat-card.tall .feat-thumb{height:260px;}
+.thumb-img{width:100%;height:100%;object-fit:cover;opacity:.55;transition:opacity .3s;}
+.feat-card:hover .thumb-img{opacity:.72;}
+.thumb-fb{font-family:'Syne',sans-serif;font-weight:800;font-size:52px;color:var(--t3);opacity:.4;position:relative;z-index:1;}
+.glow{position:absolute;inset:0;opacity:.1;pointer-events:none;}
+.feat-body{padding:22px 24px;}
+.feat-cat{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:8px;}
+.feat-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;margin-bottom:10px;color:var(--text);line-height:1.25;}
+.feat-desc{font-size:12px;color:var(--t2);line-height:1.75;margin-bottom:16px;}
+.feat-lnk{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--t2);text-decoration:none;border-bottom:1px solid var(--t3);padding-bottom:1px;transition:all .2s;width:fit-content;display:block;}
+.feat-lnk:hover{color:var(--text);border-color:var(--t2);}
+.wide-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;display:grid;grid-template-columns:300px 1fr;margin-bottom:12px;transition:border-color .25s;}
+.wide-card:hover{border-color:var(--bh);}
+.wide-thumb{background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:195px;}
+.wide-body{padding:26px 30px;display:flex;flex-direction:column;justify-content:center;}
+
+/* UX GRID */
+.ux-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.ux-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .25s;display:flex;flex-direction:column;}
+.ux-card:hover{border-color:var(--bh);background:var(--bg2);}
+.ux-thumb{height:140px;background:var(--bg3);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.ux-img{width:100%;height:100%;object-fit:cover;opacity:.5;transition:opacity .3s;}
+.ux-card:hover .ux-img{opacity:.65;}
+.ux-lbl{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--t3);opacity:.4;position:relative;z-index:1;}
+.ux-body{padding:14px 16px;flex:1;}
+.ux-cat{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
+.ux-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:5px;line-height:1.3;}
+.ux-desc{font-size:11px;color:var(--t2);line-height:1.65;}
+
+/* GALLERY */
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;}
+.gal-item{border:1px solid var(--border);border-radius:8px;overflow:hidden;aspect-ratio:4/3;position:relative;}
+.gal-img{width:100%;height:100%;object-fit:cover;opacity:.6;transition:opacity .3s,transform .4s;}
+.gal-item:hover .gal-img{opacity:.85;transform:scale(1.04);}
+.gal-lbl{position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 100%);font-size:11px;color:var(--text);font-family:'Syne',sans-serif;font-weight:600;opacity:0;transition:opacity .3s;}
+.gal-item:hover .gal-lbl{opacity:1;}
+.mh-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mh-item{border:1px solid var(--border);border-radius:8px;overflow:hidden;aspect-ratio:16/10;position:relative;}
+.mh-img{width:100%;height:100%;object-fit:cover;opacity:.6;transition:opacity .3s;}
+.mh-item:hover .mh-img{opacity:.8;}
+.sub-label{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--t2);letter-spacing:1px;text-transform:uppercase;margin:28px 0 14px;display:flex;align-items:center;gap:10px;}
+.sub-label::before{content:'';width:16px;height:1px;background:var(--t3);}
+
+/* STATS */
+.stats-row{display:flex;gap:10px;margin-bottom:56px;}
+.stat-box{border:1px solid var(--border);border-radius:6px;padding:18px 22px;flex:1;transition:border-color .25s;}
+.stat-box:hover{border-color:var(--bh);}
+.stat-n{font-family:'Syne',sans-serif;font-weight:800;font-size:38px;color:var(--a);line-height:1;}
+.stat-l{font-size:9px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-top:4px;}
+.cta-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;padding:44px 0 0;}
+.cta-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,4.5vw,56px);line-height:.92;letter-spacing:-1.5px;}
+.cta-title .md{color:var(--t3);}
+
+/* FADE */
+.fade{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.fade.in{opacity:1;transform:none;}
+
+/* GROUND / FOOTER */
+.ground{position:relative;z-index:10;height:56px;overflow:hidden;border-top:1px solid var(--border);}
+footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--t3);}
+
+@keyframes up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+@media(max-width:768px){
+  .wrap{padding:0 24px;}
+  nav{padding:16px 24px;}
+  .navr a{display:none;}
+  .about-grid,.sgrid,.pgrid,.feat-row,.ux-grid,.gal-grid,.mh-grid{grid-template-columns:1fr;}
+  .pfeat,.wide-card{grid-template-columns:1fr;}
+  .stats-row{flex-wrap:wrap;}
+  footer{padding:18px 24px;}
+}
+
+/* ─── EXPERIENCE PAGE ─── */
+#exp-page{}
+
+/* Hero bio */
+.exp-hero{
+  padding-top:140px;padding-bottom:64px;
+  position:relative;z-index:10;
+  display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:start;
+}
+.exp-hero-left{}
+.exp-location{font-size:10px;letter-spacing:3px;color:var(--a);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.exp-location::before{content:'';width:20px;height:1px;background:var(--a);}
+.exp-hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(42px,5.5vw,72px);line-height:.9;letter-spacing:-2px;margin-bottom:28px;}
+.exp-hero-name span{color:var(--a);}
+.exp-hero-bio{font-size:14px;color:var(--t2);line-height:1.85;margin-bottom:32px;max-width:480px;}
+.exp-connect-btn{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 26px;background:var(--a);color:#0d0d0d;border:none;border-radius:3px;display:inline-block;transition:opacity .2s;}
+.exp-connect-btn:hover{opacity:.85;}
+
+/* Stats inline */
+.exp-stats{display:flex;gap:24px;margin-top:36px;}
+.exp-stat{}
+.exp-stat-n{font-family:'Syne',sans-serif;font-weight:800;font-size:42px;color:var(--a);line-height:1;}
+.exp-stat-l{font-size:9px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-top:3px;}
+
+/* Marquee logos */
+.logo-marquee{
+  position:relative;z-index:10;
+  overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:14px 0;margin-bottom:0;
+}
+.logo-track{display:inline-flex;white-space:nowrap;animation:tick 20s linear infinite;align-items:center;}
+.logo-item{padding:0 32px;display:flex;align-items:center;justify-content:center;}
+.logo-item img{height:28px;width:auto;object-fit:contain;opacity:.35;filter:grayscale(1);transition:opacity .2s,filter .2s;}
+.logo-item img:hover{opacity:.7;filter:grayscale(0);}
+.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;}
+
+/* Experience timeline */
+.exp-section{position:relative;z-index:10;padding:80px 0;}
+.exp-grid{display:flex;flex-direction:column;gap:0;}
+
+/* Single experience card */
+.exp-card{
+  border-top:1px solid var(--border);
+  padding:40px 0;
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:48px;
+  align-items:start;
+  transition:border-color .25s;
+  position:relative;
+}
+.exp-card:last-child{border-bottom:1px solid var(--border);}
+.exp-card::before{
+  content:'';position:absolute;left:0;top:-1px;
+  width:0;height:1px;background:var(--a);
+  transition:width .4s ease;
+}
+.exp-card:hover::before{width:100%;}
+
+.exp-left{}
+.exp-badge{
+  display:inline-block;font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;border:1px solid;margin-bottom:14px;
+  font-family:'Inter',sans-serif;
+}
+.exp-badge.green{border-color:var(--a);color:var(--a);}
+.exp-badge.orange{border-color:var(--a2);color:var(--a2);}
+.exp-badge.gray{border-color:var(--border);color:var(--t2);}
+.exp-company{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;margin-bottom:6px;color:var(--text);}
+.exp-company-logo{
+  height:28px;width:auto;object-fit:contain;
+  opacity:.5;filter:grayscale(1);margin-bottom:10px;display:block;
+}
+.exp-role{font-size:13px;color:var(--a2);font-weight:500;margin-bottom:4px;}
+.exp-period{font-size:10px;letter-spacing:1.5px;color:var(--t2);text-transform:uppercase;margin-bottom:0;}
+
+.exp-right{}
+.exp-desc{font-size:14px;color:var(--t2);line-height:1.8;margin-bottom:20px;}
+.exp-desc strong{color:var(--text);font-weight:500;}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.exp-bullets li{
+  font-size:13px;color:var(--t2);line-height:1.7;
+  padding-left:20px;position:relative;
+}
+.exp-bullets li::before{
+  content:'';position:absolute;left:0;top:9px;
+  width:6px;height:1px;background:var(--a);
+}
+.exp-tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;}
+.exp-tag{font-size:10px;padding:4px 11px;border:1px solid var(--border);border-radius:20px;color:var(--t2);}
+
+/* International exposure highlight */
+.exp-highlight{
+  border:1px solid rgba(200,240,96,.2);
+  border-radius:8px;padding:20px 24px;
+  margin-top:16px;
+  background:rgba(200,240,96,.03);
+}
+.exp-highlight-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--a);margin-bottom:8px;}
+.exp-highlight-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:6px;color:var(--text);}
+.exp-highlight-desc{font-size:12px;color:var(--t2);line-height:1.7;}
+
+/* CTA at bottom of exp page */
+.exp-cta{
+  border-top:1px solid var(--border);
+  padding:64px 0 80px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:24px;
+  position:relative;z-index:10;
+}
+.exp-cta-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,4.5vw,56px);line-height:.92;letter-spacing:-1.5px;}
+.exp-cta-title .md{color:var(--t3);}
+
+@media(max-width:768px){
+  .exp-hero{grid-template-columns:1fr;gap:32px;}
+  .exp-card{grid-template-columns:1fr;gap:20px;}
+  .exp-stats{flex-wrap:wrap;}
+}
+</style>
+</head>
+<body>
+
+<!-- SKATER CURSOR -->
+<div id="sc">
+  <svg width="48" height="64" viewBox="0 0 52 70" fill="none">
+    <rect x="18" y="18" width="16" height="20" rx="4" fill="#dedad2"/>
+    <rect x="18" y="23" width="16" height="4" fill="#c8f060" opacity=".7"/>
+    <circle cx="26" cy="11" r="8.5" fill="#c8906a"/>
+    <path d="M17 10Q26 2 35 10v4Q26 7 17 14z" fill="#222"/>
+    <rect x="21" y="11" width="10" height="4" rx="2" fill="#111"/>
+    <rect x="9" y="20" width="10" height="3.5" rx="1.5" fill="#c8906a" transform="rotate(-12 9 20)"/>
+    <rect x="33" y="20" width="10" height="3.5" rx="1.5" fill="#c8906a" transform="rotate(12 43 20)"/>
+    <rect x="18" y="36" width="7" height="11" rx="2" fill="#1a1a1a"/>
+    <rect x="27" y="36" width="7" height="11" rx="2" fill="#1a1a1a"/>
+    <rect x="15" y="45" width="10" height="6" rx="2" fill="#e8a050"/>
+    <rect x="27" y="45" width="10" height="6" rx="2" fill="#e8a050"/>
+    <rect x="14" y="50" width="24" height="3" rx="1.5" fill="#2a2a2a"/>
+    <circle class="wh" cx="17" cy="56" r="3.2" fill="#1a1a1a" stroke="#c8f060" stroke-width="1.2"/>
+    <circle class="wh" cx="23" cy="56" r="3.2" fill="#1a1a1a" stroke="#c8f060" stroke-width="1.2"/>
+    <circle class="wh" cx="29" cy="56" r="3.2" fill="#1a1a1a" stroke="#c8f060" stroke-width="1.2"/>
+    <circle class="wh" cx="35" cy="56" r="3.2" fill="#1a1a1a" stroke="#c8f060" stroke-width="1.2"/>
+    <circle cx="17" cy="56" r="1" fill="#c8f060" opacity=".6"/>
+    <circle cx="23" cy="56" r="1" fill="#c8f060" opacity=".6"/>
+    <circle cx="29" cy="56" r="1" fill="#c8f060" opacity=".6"/>
+    <circle cx="35" cy="56" r="1" fill="#c8f060" opacity=".6"/>
+    <line id="s1" x1="4" y1="54" x2="13" y2="56" stroke="#c8f060" stroke-width=".7" opacity="0" stroke-dasharray="2 2"/>
+    <line id="s2" x1="2" y1="58" x2="12" y2="57" stroke="#c8f060" stroke-width=".5" opacity="0" stroke-dasharray="2 3"/>
+  </svg>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" onclick="goTo('home')" style="cursor:none">Nilay Gunari</a>
+  <div class="navr">
+    <a onclick="goTo('home')" id="nav-home" class="active">Home</a>
+    <a onclick="goTo('home','about')" id="nav-about">About</a>
+    <a onclick="goTo('work')" id="nav-work">Work</a>
+    <a onclick="goTo('exp')" id="nav-exp">Experience</a>
+    <a onclick="goTo('home','skills')" id="nav-skills">Skills</a>
+    <a onclick="goTo('home','contact')" id="nav-contact">Contact</a>
+    <button class="tbtn" onclick="toggleTheme()">Light</button>
+  </div>
+</nav>
+
+<!-- ═══════════════ HOME PAGE ═══════════════ -->
+<div id="home-page" class="pg active">
+
+  <div class="wrap">
+    <section id="hero">
+      <div class="eyebrow">UX &amp; Game Designer · Maharashtra, India</div>
+      <div class="hname">
+        <span class="r1">NILAY</span>
+        <span class="r2"><span class="dim">GU</span><span class="acc">NARI</span></span>
+      </div>
+      <p class="hsub">I design immersive XR experiences — VR training simulations, AR product demos, and game-driven interfaces that feel natural, engaging, and purposeful.</p>
+      <div class="pills">
+        <span class="pill pa">Game Design</span>
+        <span class="pill pb">XR · VR · AR</span>
+        <span class="pill">Unreal Engine</span>
+        <span class="pill pa">🛹 Inline Skating</span>
+        <span class="pill pb">🏏 Cricket</span>
+        <span class="pill">UX Research</span>
+        <span class="pill">3D Modelling</span>
+      </div>
+      <div class="hbtns">
+        <a onclick="goTo('work')" class="bsolid">View Work</a>
+        <a onclick="goTo('home','contact')" class="bghost">Get In Touch</a>
+      </div>
+      <div class="scroll-hint">Scroll Down</div>
+    </section>
+  </div>
+
+  <div class="ticker">
+    <div class="ttrack">
+      <span class="titem">Game Design</span><span class="tsep">✦</span><span class="titem">VR Training</span><span class="tsep">✦</span><span class="titem">AR Experiences</span><span class="tsep">✦</span><span class="titem">Unreal Engine 5</span><span class="tsep">✦</span><span class="titem">Inline Skating</span><span class="tsep">✦</span><span class="titem">3D Modelling</span><span class="tsep">✦</span><span class="titem">Cricket</span><span class="tsep">✦</span><span class="titem">MetaHuman</span><span class="tsep">✦</span><span class="titem">Blueprint Scripting</span><span class="tsep">✦</span><span class="titem">UX Research</span><span class="tsep">✦</span>
+      <span class="titem">Game Design</span><span class="tsep">✦</span><span class="titem">VR Training</span><span class="tsep">✦</span><span class="titem">AR Experiences</span><span class="tsep">✦</span><span class="titem">Unreal Engine 5</span><span class="tsep">✦</span><span class="titem">Inline Skating</span><span class="tsep">✦</span><span class="titem">3D Modelling</span><span class="tsep">✦</span><span class="titem">Cricket</span><span class="tsep">✦</span><span class="titem">MetaHuman</span><span class="tsep">✦</span><span class="titem">Blueprint Scripting</span><span class="tsep">✦</span><span class="titem">UX Research</span><span class="tsep">✦</span>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <div class="wrap">
+    <section class="sec" id="about">
+      <div class="slabel">About</div>
+      <h2 class="stitle">The Player</h2>
+      <div class="about-grid">
+        <div class="abody">
+          <p>I'm a <strong>UX + Game Designer</strong> based in Maharashtra, India with 2+ years of experience at the intersection of emerging technology and human psychology.</p>
+          <p>I interned at <strong>Garware Technical Fibres Ltd.</strong> — the world's largest supplier of aquaculture cages — building an AR product demo presented at <strong>Aqua-Nor, Norway</strong>, the world's largest aquaculture tech exhibition.</p>
+          <p>I design VR training missions, AR demos, 3D characters and game environments — primarily in Unreal Engine 5 with Blueprint scripting.</p>
+          <div class="stats">
+            <div class="stat"><div class="sn">2+</div><div class="sl">Years experience</div></div>
+            <div class="stat"><div class="sn">10+</div><div class="sl">Projects done</div></div>
+            <div class="stat"><div class="sn">1</div><div class="sl">World expo</div></div>
+            <div class="stat" style="border-color:rgba(200,240,96,.18)"><div class="sn" style="color:var(--a2)">∞</div><div class="sl">Ideas in queue</div></div>
+          </div>
+        </div>
+        <div class="hobs">
+          <div class="hob"><div class="hico">🛹</div><div><div class="hn" style="color:var(--a)">Inline Skating</div><div class="hd">Reading terrain, adapting technique under pressure, clean execution. The same feedback loop that shapes every interaction I design.</div></div></div>
+          <div class="hob"><div class="hico">🏏</div><div><div class="hn" style="color:var(--a2)">Cricket</div><div class="hd">A 22-yard strategy game. Reading the bowler, anticipating spin, adapting mid-over — the same systems thinking that drives my design decisions.</div></div></div>
+          <div class="hob"><div class="hico">🎮</div><div><div class="hn">Game Design</div><div class="hd">Blueprint scripting in UE5, MetaHuman characters, 3D modelling, and turning real-world problems into immersive training missions.</div></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="divider"></div>
+
+  <!-- WORK PREVIEW -->
+  <div class="wrap">
+    <section class="sec" id="work-preview">
+      <div class="view-all-row">
+        <div>
+          <div class="slabel">Work</div>
+          <h2 class="stitle" style="margin-bottom:0">Selected Projects</h2>
+        </div>
+        <a onclick="goTo('work')" class="view-all-btn">View All Projects →</a>
+      </div>
+
+      <div class="pfeat fade" onclick="window.open('https://nilayngunari.framer.website/videos1','_blank')">
+        <div class="pthumb">
+          <div class="pglow" style="background:radial-gradient(ellipse,#c8f060 0%,transparent 65%)"></div>
+          <img style="width:100%;height:100%;object-fit:cover;opacity:.5;position:absolute;inset:0;" src="https://framerusercontent.com/images/WBQ4aOVdnyEXocUQr75BHgSFCo4.jpg?width=600" onerror="this.style.display='none'"/>
+
+          <div class="pbadge bg">VR Training</div>
+        </div>
+        <div class="pbody">
+          <div class="ptitle">Firefighter VR Training Simulator</div>
+          <p class="pdesc">Step into the role of a real firefighter. Arrive at an active emergency, assess the scene, identify the fire type, and choose the correct extinguisher. High-stakes immersive training built for emergency preparedness.</p>
+          <a href="https://nilayngunari.framer.website/videos1" target="_blank" class="plink">Watch Video →</a>
+        </div>
+      </div>
+
+      <div class="pfeat fade" onclick="window.open('https://nilayngunari.framer.website/video5','_blank')">
+        <div class="pthumb">
+          <div class="pglow" style="background:radial-gradient(ellipse,#e8a050 0%,transparent 65%)"></div>
+          <div class="ptlabel">AR</div>
+          <div class="pbadge bo">AR · Internship</div>
+        </div>
+        <div class="pbody">
+          <div class="ptitle">Aquaculture AR — Garware Technical Fibres</div>
+          <p class="pdesc">Interactive AR for virtual product knowledge at the world's largest aquaculture cage supplier. Presented at <strong style="color:var(--text)">Aqua-Nor, Norway</strong> — the world's largest aquaculture tech exhibition.</p>
+          <a href="https://nilayngunari.framer.website/video5" target="_blank" class="plink">Watch Video →</a>
+        </div>
+      </div>
+
+      <div class="pgrid fade">
+        <div class="pcard" onclick="window.open('https://nilayngunari.framer.website/vr1','_blank')">
+          <div class="pcthumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(200,240,96,.1) 0%,transparent 70%)"></div><div class="pctl">EOD</div><div class="pbadge bg" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">VR Research</div></div>
+          <div class="pcbody"><div class="pctitle">Bomb Disposal VR Training</div><p class="pcdesc">Immersive, repeatable VR strategies for EOD units in India.</p></div>
+        </div>
+        <div class="pcard">
+          <div class="pcthumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(232,160,80,.1) 0%,transparent 70%)"></div><div class="pctl">PSY</div><div class="pbadge bw" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">Behaviour Design</div></div>
+          <div class="pcbody"><div class="pctitle">Anti-Littering Behavioural Design</div><p class="pcdesc">Behavioural psychology applied to public littering interventions.</p></div>
+        </div>
+        <div class="pcard">
+          <div class="pcthumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(200,240,96,.1) 0%,transparent 70%)"></div><div class="pctl">3D</div><div class="pbadge bo" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">3D Models</div></div>
+          <div class="pcbody"><div class="pctitle">3D Modelling & MetaHuman</div><p class="pcdesc">AR book models, ferry, weapon assets, MetaHuman characters.</p></div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:8px;">
+        <a onclick="goTo('work')" class="view-all-btn">See All 10+ Projects →</a>
+      </div>
+    </section>
+  </div>
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <div class="wrap">
+    <section class="sec" id="skills">
+      <div class="slabel">Skills</div>
+      <h2 class="stitle">Loadout</h2>
+      <div class="sgrid">
+        <div>
+          <div class="sgtitle">Game & XR Design</div>
+          <div class="skrow"><div class="skname"><span>Unreal Engine 5</span><span>90%</span></div><div class="sktrack"><div class="skbar" data-w=".9"></div></div></div>
+          <div class="skrow"><div class="skname"><span>Blueprint Scripting</span><span>85%</span></div><div class="sktrack"><div class="skbar" data-w=".85"></div></div></div>
+          <div class="skrow"><div class="skname"><span>VR Design & Development</span><span>88%</span></div><div class="sktrack"><div class="skbar" data-w=".88"></div></div></div>
+          <div class="skrow"><div class="skname"><span>AR Development</span><span>80%</span></div><div class="sktrack"><div class="skbar" data-w=".80"></div></div></div>
+          <div class="skrow"><div class="skname"><span>3D Modelling & MetaHuman</span><span>82%</span></div><div class="sktrack"><div class="skbar" data-w=".82"></div></div></div>
+          <div style="margin-top:28px"><div class="sgtitle">Tools</div><div class="tools"><span class="ttag">Figma</span><span class="ttag">Unreal Engine 5</span><span class="ttag">Blender</span><span class="ttag">MetaHuman</span><span class="ttag">Adobe XD</span><span class="ttag">Framer</span></div></div>
+        </div>
+        <div>
+          <div class="sgtitle">UX & Interaction Design</div>
+          <div class="skrow"><div class="skname"><span>UX Research</span><span>85%</span></div><div class="sktrack"><div class="skbar b" data-w=".85"></div></div></div>
+          <div class="skrow"><div class="skname"><span>Interaction Design</span><span>87%</span></div><div class="sktrack"><div class="skbar b" data-w=".87"></div></div></div>
+          <div class="skrow"><div class="skname"><span>Cognitive Design</span><span>82%</span></div><div class="sktrack"><div class="skbar b" data-w=".82"></div></div></div>
+          <div class="skrow"><div class="skname"><span>Behavioural Psychology</span><span>78%</span></div><div class="sktrack"><div class="skbar b" data-w=".78"></div></div></div>
+          <div class="skrow"><div class="skname"><span>Figma & Prototyping</span><span>90%</span></div><div class="sktrack"><div class="skbar b" data-w=".90"></div></div></div>
+          <div style="margin-top:28px"><div class="sgtitle">Approach</div><div class="tools"><span class="ttag">Systems Thinking</span><span class="ttag">Flow State Design</span><span class="ttag">Rapid Prototyping</span><span class="ttag">Cognitive Checkpoints</span></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <div class="wrap">
+    <section class="sec" id="contact">
+      <div class="slabel">Contact</div>
+      <div class="ctitle"><div>Let's Work</div><div class="md">Together</div></div>
+      <p style="font-size:14px;color:var(--t2);line-height:1.8;max-width:440px;">VR training systems, AR product demos, game-driven UX — if you're building something immersive, let's talk.</p>
+      <div class="socrow">
+        <a href="https://www.linkedin.com/in/nilay-gunari-a379a0273" target="_blank" class="soclink">LinkedIn</a>
+        <a href="https://www.instagram.com/nilay_gunari" target="_blank" class="soclink">Instagram</a>
+        <a href="https://www.behance.net/dhruvaagunari" target="_blank" class="soclink">Behance</a>
+        <a href="/cdn-cgi/l/email-protection#47" class="soclink">Email</a>
+      </div>
+    </section>
+  </div>
+
+  <div class="ground">
+    <svg width="100%" height="56" viewBox="0 0 1000 56" preserveAspectRatio="none" fill="none">
+      <rect x="0" y="38" width="1000" height="2" rx="1" fill="var(--border)"/>
+      <path d="M0 38Q90 38 115 14L123 14Q94 38 8 40Z" fill="var(--bg3)" opacity=".5"/>
+      <path d="M1000 38Q910 38 885 14L877 14Q906 38 992 40Z" fill="var(--bg3)" opacity=".5"/>
+      <rect x="440" y="26" width="120" height="2" rx="1" fill="var(--a)" opacity=".18"/>
+    </svg>
+  </div>
+  <footer><span>© 2025 Nilay Gunari</span><span>Maharashtra, India</span></footer>
+</div>
+
+<!-- ═══════════════ WORK PAGE ═══════════════ -->
+<div id="work-page" class="pg">
+
+  <div class="wrap">
+    <section id="work-hero">
+      <div class="eyebrow" style="opacity:0;animation:up .6s .1s forwards;">Portfolio · XR & UX Projects</div>
+      <div class="page-title">Selected <span>Work</span></div>
+      <p class="page-sub">A collection of XR experiences, VR training simulations, AR product demos, UX research projects, and 3D models — all grounded in human-centred design thinking.</p>
+      <div class="filters">
+        <span class="ftab on" onclick="filterWork(this,'all')">All Projects</span>
+        <span class="ftab" onclick="filterWork(this,'vr')">VR / AR</span>
+        <span class="ftab" onclick="filterWork(this,'ux')">UX Design</span>
+        <span class="ftab" onclick="filterWork(this,'3d')">3D & MetaHuman</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- XR -->
+  <div class="wrap">
+    <section class="sec">
+      <div class="slabel">XR & VR Projects</div>
+      <h2 class="stitle">Immersive Training & Simulation</h2>
+
+      <div class="feat-row fade" data-wcat="vr">
+        <div class="feat-card tall" onclick="window.open('https://nilayngunari.framer.website/videos1','_blank')">
+          <div class="feat-thumb">
+            <div class="glow" style="background:radial-gradient(ellipse,#c8f060 0%,transparent 65%)"></div>
+            <img class="thumb-img" src="https://framerusercontent.com/images/WBQ4aOVdnyEXocUQr75BHgSFCo4.jpg?width=700" alt="" onerror="this.style.display='none'"/>
+            
+            <div class="pbadge bg">VR Training</div>
+          </div>
+          <div class="feat-body">
+            <div class="feat-cat">Immersive Training · Unreal Engine</div>
+            <div class="feat-title">Firefighter VR Training Simulator</div>
+            <p class="feat-desc">Step into the role of a real firefighter. Arrive at an active emergency, assess the scene, identify the fire type, and choose the correct extinguisher. High-stakes immersive training built for emergency preparedness.</p>
+            <a href="https://nilayngunari.framer.website/videos1" target="_blank" class="feat-lnk">Watch Video →</a>
+          </div>
+        </div>
+        <div class="feat-card tall" onclick="window.open('https://nilayngunari.framer.website/video5','_blank')">
+          <div class="feat-thumb">
+            <div class="glow" style="background:radial-gradient(ellipse,#e8a050 0%,transparent 65%)"></div>
+            
+            <div class="pbadge bo">AR · Internship</div>
+          </div>
+          <div class="feat-body">
+            <div class="feat-cat">Augmented Reality · Garware Technical Fibres</div>
+            <div class="feat-title">Aquaculture AR Product Demo</div>
+            <p class="feat-desc">Interactive AR for virtual product knowledge at the world's largest aquaculture cage supplier. Presented at <strong style="color:var(--text)">Aqua-Nor, Norway</strong> — the world's largest aquaculture tech exhibition.</p>
+            <a href="https://nilayngunari.framer.website/video5" target="_blank" class="feat-lnk">Watch Video →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="wide-card fade" data-wcat="vr" onclick="window.open('https://nilayngunari.framer.website/vr1','_blank')">
+        <div class="wide-thumb">
+          <div class="glow" style="background:radial-gradient(ellipse,#c8f060 0%,transparent 65%)"></div>
+          <img class="thumb-img" src="https://framerusercontent.com/images/XZL3w33yPWLbvXjn9b062swZPwk.png?width=500" alt="" onerror="this.style.display='none'"/>
+          <div class="pbadge bg">VR Research</div>
+        </div>
+        <div class="wide-body">
+          <div class="feat-cat">VR Training Strategy · Safety & Defence</div>
+          <div class="feat-title" style="font-size:18px;margin-bottom:10px;">Bomb Disposal VR Training</div>
+          <p class="feat-desc">Tackles the critical challenge of bomb disposal training — addressing high cost, risk, and limited realism. Identifies key gaps and transforms them into immersive, repeatable, and safe VR training strategies for EOD units in India.</p>
+          <a href="https://nilayngunari.framer.website/vr1" target="_blank" class="feat-lnk">View Project →</a>
+        </div>
+      </div>
+
+      <div class="wide-card fade" data-wcat="vr">
+        <div class="wide-thumb">
+          <div class="glow" style="background:radial-gradient(ellipse,#e8a050 0%,transparent 65%)"></div>
+          <img class="thumb-img" src="https://framerusercontent.com/images/h5reRmHtUOuSQcBKggPddyRHRA.webp?width=500" alt="" onerror="this.style.display='none'"/>
+          <div class="pbadge bo">Unreal Engine</div>
+        </div>
+        <div class="wide-body">
+          <div class="feat-cat">Game Engine · Blueprint Scripting</div>
+          <div class="feat-title" style="font-size:18px;margin-bottom:10px;">Unreal Engine Foundations</div>
+          <p class="feat-desc">Building strong foundations in Unreal Engine by learning core functions and Blueprint scripting. Hands-on error fixing, creating interactions, and understanding game logic for advanced VR and gameplay development.</p>
+          <a href="https://nilayngunari.framer.website/video3" target="_blank" class="feat-lnk">See Video →</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- UX -->
+  <div class="wrap">
+    <section class="sec">
+      <div class="slabel">UX & Interaction Design</div>
+      <h2 class="stitle">Human-Centred Design Projects</h2>
+      <div class="ux-grid fade" data-wcat="ux">
+        <div class="ux-card">
+          <div class="ux-thumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(200,240,96,.1) 0%,transparent 70%)"></div><img class="ux-img" src="https://framerusercontent.com/images/roZChET0WMLrEicbNwT6rxWCnE.jpg?width=400" alt="" onerror="this.style.display='none'"/><div class="ux-lbl"></div><div class="pbadge bg" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">Social Psychology</div></div>
+          <div class="ux-body"><div class="ux-cat">Ideation · Behavioural Design</div><div class="ux-title">Anti-Littering Behavioural Design</div><p class="ux-desc">Applies behavioural psychology to address littering — identifying root causes through human error and habit analysis, translating insights into design interventions.</p></div>
+        </div>
+        <div class="ux-card">
+          <div class="ux-thumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(232,160,80,.1) 0%,transparent 70%)"></div><img class="ux-img" src="https://framerusercontent.com/images/SF8zOPUNg4YGfbw3lGlFhXFTeTA.png?width=400" alt="" onerror="this.style.display='none'"/><div class="ux-lbl"></div><div class="pbadge bo" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">Tangible Interaction</div></div>
+          <div class="ux-body"><div class="ux-cat">Interactive Model · Cognitive Psychology</div><div class="ux-title">Interactive Periodic Table</div><p class="ux-desc">Transforms periodic table learning — replacing rote memorisation with interactive, multisensory strategies that build recall and reveal trends.</p></div>
+        </div>
+        <div class="ux-card">
+          <div class="ux-thumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(200,240,96,.1) 0%,transparent 70%)"></div><img class="ux-img" src="https://framerusercontent.com/images/Vxf2K26XfXQ2mSXpDoiRIJGe0vU.jpg?width=400" alt="" onerror="this.style.display='none'"/><div class="ux-lbl"></div><div class="pbadge bg" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">UX Prototype</div></div>
+          <div class="ux-body"><div class="ux-cat">Interaction Design · Cognitive Evaluation</div><div class="ux-title">Find The Treasure</div><p class="ux-desc">Interactive action flow with cognitive checkpoints. Evaluation insights guided a refined redesign grounded in clear cognitive principles.</p></div>
+        </div>
+        <div class="ux-card">
+          <div class="ux-thumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(232,160,80,.1) 0%,transparent 70%)"></div><img class="ux-img" src="https://framerusercontent.com/images/20cOp5BBdYQKcyION9LkEKNRtI.jpg?width=400" alt="" onerror="this.style.display='none'"/><div class="ux-lbl"></div><div class="pbadge bo" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">Special Needs</div></div>
+          <div class="ux-body"><div class="ux-cat">Design For Special Needs · Ideation</div><div class="ux-title">Low Vision Accessibility Design</div><p class="ux-desc">Adaptive tools and inclusive systems to enhance independence, accessibility, and quality of life for partially blind individuals.</p></div>
+        </div>
+        <div class="ux-card">
+          <div class="ux-thumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(200,240,96,.1) 0%,transparent 70%)"></div><img class="ux-img" src="https://framerusercontent.com/images/F2ABgbyv1M9UeBwV4d2nmeJLzE.jpg?width=400" alt="" onerror="this.style.display='none'"/><div class="ux-lbl"></div><div class="pbadge bw" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">Interaction Design</div></div>
+          <div class="ux-body"><div class="ux-cat">Interaction Design · Strategy</div><div class="ux-title">Smart Home Mood Lighting System</div><p class="ux-desc">Smart homes using mood lighting to match emotions — reducing stress and boosting relaxation, focus, and emotional well-being.</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 3D MODELS -->
+  <div class="wrap">
+    <section class="sec">
+      <div class="slabel">3D & MetaHuman</div>
+      <h2 class="stitle">3D Models & Characters</h2>
+
+      <div class="fade" data-wcat="3d">
+        <div class="sub-label">3D Characters</div>
+        <div class="gal-grid" style="grid-template-columns:repeat(2,1fr);">
+          <div class="gal-item" style="aspect-ratio:3/4;"><img class="gal-img" src="https://framerusercontent.com/images/DPKMClqfgTxtqPq9aRqjryZnc.png?width=400" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">3D Character</div></div>
+          <div class="gal-item" style="aspect-ratio:3/4;"><img class="gal-img" src="https://framerusercontent.com/images/LXbzwtd5rwItLCx9r6YPhlXAXg.png?width=400" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">Character Rigging</div></div>
+        </div>
+
+        <div class="sub-label">AR Book Model & Ferry 3D Model</div>
+        <div class="gal-grid">
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/0G0ZwJ60P6t8MIkoGuKN15kcx7E.png?width=500" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">AR Book Model</div></div>
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/D1Vu6t9mFRCwlaFoUw7h3tx598.png?width=500" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">Ferry 3D Model</div></div>
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/jM4m0H27d81icjey4ntl5JD91E.png?width=500" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">Model Detail</div></div>
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/52TWPB4m4oljw3CH88qaHKK8vI.png?width=500" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">Ferry Interior</div></div>
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/CkhZ5x7NpIbHqtoeXwNOmifG3E.png?width=500" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">AR Detail View</div></div>
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/60fNTiZr3225bJ3q2uIAhF02T4c.png?width=500" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">Final Render</div></div>
+        </div>
+
+        <div class="sub-label">Weapons 3D Model</div>
+        <div class="gal-grid">
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/aa3Q7VCG9PU4Z2iCDZH4ZLAXU.png?width=600" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">Weapon Asset</div></div>
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/j90OJXFI8n4iOafCBRNmhaeZ0Oo.png?width=600" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">Detail View</div></div>
+          <div class="gal-item"><img class="gal-img" src="https://framerusercontent.com/images/ho01DmAOgeNIqVCSdMQCgCJUmLA.png?width=600" alt="" onerror="this.style.display='none'"/><div class="gal-lbl">Textured Render</div></div>
+        </div>
+
+        <div class="sub-label">MetaHuman Characters</div>
+        <div class="mh-grid">
+          <div class="mh-item"><img class="mh-img" src="https://framerusercontent.com/images/L0zrfq6hDfMoCJdz9ZRk48X90.jpeg?width=700" alt="" onerror="this.style.display='none'"/></div>
+          <div class="mh-item"><img class="mh-img" src="https://framerusercontent.com/images/N4KZ16aN6gDG0Ig25LLgfWNKw.jpeg?width=700" alt="" onerror="this.style.display='none'"/></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CTA -->
+  <div class="wrap">
+    <section class="sec" style="padding-bottom:80px;">
+      <div class="stats-row fade">
+        <div class="stat-box"><div class="stat-n">2+</div><div class="stat-l">Years experience</div></div>
+        <div class="stat-box"><div class="stat-n">10+</div><div class="stat-l">Projects completed</div></div>
+        <div class="stat-box"><div class="stat-n">1</div><div class="stat-l">World expo</div></div>
+        <div class="stat-box" style="border-color:rgba(200,240,96,.15)"><div class="stat-n" style="color:var(--a2)">∞</div><div class="stat-l">Ideas in queue</div></div>
+      </div>
+      <div class="cta-row fade">
+        <div class="cta-title"><div>Let's Work</div><div class="md">Together</div></div>
+        <div>
+          <p style="font-size:13px;color:var(--t2);line-height:1.75;max-width:320px;margin-bottom:22px;">VR training systems, AR product demos, game-driven UX — if you're building something immersive, I'd love to hear about it.</p>
+          <div class="socrow">
+            <a href="https://www.linkedin.com/in/nilay-gunari-a379a0273" target="_blank" class="soclink">LinkedIn</a>
+            <a href="https://www.instagram.com/nilay_gunari" target="_blank" class="soclink">Instagram</a>
+            <a href="https://www.behance.net/dhruvaagunari" target="_blank" class="soclink">Behance</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer><span>© 2025 Nilay Gunari</span><a onclick="goTo('home')" style="color:var(--t3);letter-spacing:1px;font-size:10px;text-transform:uppercase;">← Back to Home</a></footer>
+</div>
+
+<!-- ═══════════════ EXPERIENCE PAGE ═══════════════ -->
+<div id="exp-page" class="pg">
+
+  <div class="wrap">
+    <!-- HERO BIO -->
+    <section class="exp-hero">
+      <div class="exp-hero-left">
+        <div class="exp-location">Maharashtra, India</div>
+        <div class="exp-hero-name">NILAY<br><span>GUNARI</span></div>
+        <div class="exp-stats">
+          <div class="exp-stat"><div class="exp-stat-n">2+</div><div class="exp-stat-l">Years experience</div></div>
+          <div class="exp-stat"><div class="exp-stat-n">10+</div><div class="exp-stat-l">Projects done</div></div>
+          <div class="exp-stat"><div class="exp-stat-n">3</div><div class="exp-stat-l">Internships</div></div>
+        </div>
+      </div>
+      <div class="exp-hero-right" style="padding-top:20px;">
+        <div class="slabel">About Me</div>
+        <p class="exp-hero-bio">I'm a UX designer passionate about crafting intuitive, human-centered experiences that connect people with technology in meaningful ways. By blending emerging technologies with thoughtful design, I strive to create seamless systems that not only solve problems but also feel natural, engaging, and effortless to use.</p>
+        <button class="exp-connect-btn" onclick="goTo('home','contact')">Connect With Me →</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- LOGO MARQUEE -->
+  <div class="logo-marquee">
+    <div class="logo-track">
+      <div class="logo-item"><img src="https://framerusercontent.com/images/LYNkAmyebCYp2Q99QfrBbpNag.png?width=200" alt="Garware" onerror="this.style.display='none'"/></div>
+      <div class="logo-item"><span class="logo-text">Garware Technical Fibres</span></div>
+      <div class="logo-item"><img src="https://framerusercontent.com/images/2XYyM5H3K9bwxjRdSIXCWEo358.webp?width=120" alt="Sectr" onerror="this.style.display='none'"/></div>
+      <div class="logo-item"><span class="logo-text">Sectr Consol</span></div>
+      <div class="logo-item"><img src="https://framerusercontent.com/images/zr61Bw3NxyJyEHo2nYKgSIVUPY4.png?width=180" alt="BeeBiotics" onerror="this.style.display='none'"/></div>
+      <div class="logo-item"><span class="logo-text">BeeBiotics</span></div>
+      <div class="logo-item"><span class="logo-text">Aqua-Nor Norway</span></div>
+      <div class="logo-item"><img src="https://framerusercontent.com/images/cGLGXHMMEO1oXiQn21XxGSxT50.png?width=300" alt="Logo" onerror="this.style.display='none'"/></div>
+      <!-- duplicate for seamless -->
+      <div class="logo-item"><img src="https://framerusercontent.com/images/LYNkAmyebCYp2Q99QfrBbpNag.png?width=200" alt="Garware" onerror="this.style.display='none'"/></div>
+      <div class="logo-item"><span class="logo-text">Garware Technical Fibres</span></div>
+      <div class="logo-item"><img src="https://framerusercontent.com/images/2XYyM5H3K9bwxjRdSIXCWEo358.webp?width=120" alt="Sectr" onerror="this.style.display='none'"/></div>
+      <div class="logo-item"><span class="logo-text">Sectr Consol</span></div>
+      <div class="logo-item"><img src="https://framerusercontent.com/images/zr61Bw3NxyJyEHo2nYKgSIVUPY4.png?width=180" alt="BeeBiotics" onerror="this.style.display='none'"/></div>
+      <div class="logo-item"><span class="logo-text">BeeBiotics</span></div>
+      <div class="logo-item"><span class="logo-text">Aqua-Nor Norway</span></div>
+      <div class="logo-item"><img src="https://framerusercontent.com/images/cGLGXHMMEO1oXiQn21XxGSxT50.png?width=300" alt="Logo" onerror="this.style.display='none'"/></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE TIMELINE -->
+  <div class="wrap">
+    <section class="exp-section">
+      <div class="slabel">Experience</div>
+      <h2 class="stitle">Where I've Worked</h2>
+
+      <div class="exp-grid">
+
+        <!-- GARWARE -->
+        <div class="exp-card fade">
+          <div class="exp-left">
+            <span class="exp-badge green">Showcase · AR/VR</span>
+            <img class="exp-company-logo" src="https://framerusercontent.com/images/LYNkAmyebCYp2Q99QfrBbpNag.png?width=200" alt="Garware" onerror="this.style.display='none'"/>
+            <div class="exp-company">Garware Technical Fibres Ltd.</div>
+            <div class="exp-role">UX Designer & AR/VR Developer</div>
+            <div class="exp-period">Internship · 2024–2025</div>
+            <div class="exp-tag-row" style="margin-top:16px;">
+              <span class="exp-tag">AR Development</span>
+              <span class="exp-tag">UX Design</span>
+              <span class="exp-tag">User Research</span>
+              <span class="exp-tag">VR</span>
+            </div>
+          </div>
+          <div class="exp-right">
+            <p class="exp-desc">Developed an immersive AR model to showcase Garware's aquaculture textile solutions, blending <strong>innovation with real-world utility</strong>. World's largest supplier of aquaculture cages.</p>
+            <ul class="exp-bullets">
+              <li>Conducted user research with Norwegian customers, aligning design solutions with global user needs and expectations.</li>
+              <li>Collaborated with cross-functional teams to bridge design, engineering, and business goals for AR/VR implementation.</li>
+              <li>Created a cutting-edge AR presentation that highlighted Garware's global capabilities and technological leadership.</li>
+              <li>Delivered an interactive AR experience at the Aqua Nor Global Exhibition, Norway, engaging an international audience.</li>
+            </ul>
+            <div class="exp-highlight">
+              <div class="exp-highlight-label">🌍 International Exposure</div>
+              <div class="exp-highlight-title">Aqua-Nor 2025 · Norway</div>
+              <p class="exp-highlight-desc">Showcased the AR model at Aqua Nor 2025 — the world's largest aquaculture technology exhibition — captivating international stakeholders and industry leaders. Demonstrated Garware's global innovation through interactive, user-focused AR storytelling.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTR CONSOL -->
+        <div class="exp-card fade">
+          <div class="exp-left">
+            <span class="exp-badge orange">User Experience</span>
+            <img class="exp-company-logo" src="https://framerusercontent.com/images/2XYyM5H3K9bwxjRdSIXCWEo358.webp?width=120" alt="Sectr Consol" onerror="this.style.display='none'"/>
+            <div class="exp-company">Sectr Consol Pvt. Ltd.</div>
+            <div class="exp-role">UX Research Intern</div>
+            <div class="exp-period">Internship</div>
+            <div class="exp-tag-row" style="margin-top:16px;">
+              <span class="exp-tag">UX Research</span>
+              <span class="exp-tag">IoT Design</span>
+              <span class="exp-tag">Sustainability</span>
+              <span class="exp-tag">Systems Design</span>
+            </div>
+          </div>
+          <div class="exp-right">
+            <p class="exp-desc">Designed a <strong>Smart Crabpot with LiDAR + IoT</strong> for efficient and sustainable aquatic trapping — merging sustainability and innovation in system design.</p>
+            <ul class="exp-bullets">
+              <li>Applied UX research methodologies to make complex technology usable, intuitive, and eco-conscious.</li>
+              <li>Merged sustainability and innovation in system design — balancing environmental responsibility with user utility.</li>
+              <li>Worked with engineers and industry experts to deliver user-first solutions that met real-world operational needs.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- BEEBIOTICS -->
+        <div class="exp-card fade">
+          <div class="exp-left">
+            <span class="exp-badge gray">Graphics Design</span>
+            <img class="exp-company-logo" src="https://framerusercontent.com/images/zr61Bw3NxyJyEHo2nYKgSIVUPY4.png?width=200" alt="BeeBiotics" onerror="this.style.display='none'"/>
+            <div class="exp-company">BeeBiotics — The Green Lifestyle Solution</div>
+            <div class="exp-role">Graphics Design Intern</div>
+            <div class="exp-period">Internship</div>
+            <div class="exp-tag-row" style="margin-top:16px;">
+              <span class="exp-tag">Graphic Design</span>
+              <span class="exp-tag">Brand Identity</span>
+              <span class="exp-tag">Campaign Design</span>
+              <span class="exp-tag">Print & Digital</span>
+            </div>
+          </div>
+          <div class="exp-right">
+            <p class="exp-desc">Designed digital & print visuals aligned with brand identity for a <strong>sustainable lifestyle brand</strong>, combining creativity with clear brand communication.</p>
+            <ul class="exp-bullets">
+              <li>Collaborated with the marketing team to craft engaging campaign creatives that resonated with eco-conscious audiences.</li>
+              <li>Applied MAAC Institute design training to real-world projects, enhancing visual storytelling impact across channels.</li>
+              <li>Strengthened expertise in graphic design and brand communication through hands-on campaigns and iterative design cycles.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CTA -->
+  <div class="wrap">
+    <div class="exp-cta fade">
+      <div class="exp-cta-title">
+        <div>Let's Work</div>
+        <div class="md">Together</div>
+      </div>
+      <div>
+        <p style="font-size:14px;color:var(--t2);line-height:1.8;max-width:360px;margin-bottom:24px;">VR training systems, AR product demos, game-driven UX — if you're building something immersive, let's talk.</p>
+        <div class="socrow">
+          <a href="https://www.linkedin.com/in/nilay-gunari-a379a0273" target="_blank" class="soclink">LinkedIn</a>
+          <a href="https://www.instagram.com/nilay_gunari" target="_blank" class="soclink">Instagram</a>
+          <a href="https://www.behance.net/dhruvaagunari" target="_blank" class="soclink">Behance</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><span>© 2025 Nilay Gunari</span><a onclick="goTo('home')" style="color:var(--t3);letter-spacing:1px;font-size:10px;text-transform:uppercase;">← Back to Home</a></footer>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── CURSOR ──
+const sc=document.getElementById('sc'),s1=document.getElementById('s1'),s2=document.getElementById('s2');
+let cx=window.innerWidth/2,cy=window.innerHeight/2,tx=cx,ty=cy,prevX=cx,prevY=cy,mt;
+(function loop(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;sc.style.left=cx+'px';sc.style.top=cy+'px';requestAnimationFrame(loop);})();
+document.addEventListener('mousemove',e=>{
+  const dx=e.clientX-tx,dy=e.clientY-ty;tx=e.clientX;ty=e.clientY;
+  const svg=sc.querySelector('svg');
+  if(Math.abs(dx)>Math.abs(dy)){svg.style.transform=dx>2?'rotate(8deg)':dx<-2?'rotate(-8deg) scaleX(-1)':'';}
+  else{svg.style.transform=dy<-2?'rotate(-10deg)':dy>2?'rotate(5deg)':'';}
+  sc.classList.add('mv');s1.setAttribute('opacity','.35');s2.setAttribute('opacity','.2');
+  clearTimeout(mt);mt=setTimeout(()=>{sc.classList.remove('mv');svg.style.transform='';s1.setAttribute('opacity','0');s2.setAttribute('opacity','0');},200);
+  if(Math.hypot(e.clientX-prevX,e.clientY-prevY)>18){
+    const m=document.createElement('div');m.className='wmark';
+    m.style.cssText=`left:${e.clientX-2}px;top:${e.clientY+18}px;background:${Math.random()>.5?'#c8f060':'#e8a050'}`;
+    document.body.appendChild(m);setTimeout(()=>m.remove(),800);prevX=e.clientX;prevY=e.clientY;
+  }
+});
+
+
+// ── PAGE NAVIGATION ──
+function goTo(page, section){
+  const home=document.getElementById('home-page');
+  const work=document.getElementById('work-page');
+  const exp=document.getElementById('exp-page');
+  // fade out all
+  [home,work,exp].forEach(p=>{p.style.opacity='0';});
+  setTimeout(()=>{
+    [home,work,exp].forEach(p=>p.classList.remove('active'));
+    // clear nav active
+    document.querySelectorAll('.navr a').forEach(a=>a.classList.remove('active'));
+    if(page==='work'){
+      work.classList.add('active');
+      document.getElementById('nav-work').classList.add('active');
+      setTimeout(()=>{work.style.opacity='1';window.scrollTo(0,0);triggerFades(work);},20);
+    } else if(page==='exp'){
+      exp.classList.add('active');
+      document.getElementById('nav-exp').classList.add('active');
+      setTimeout(()=>{exp.style.opacity='1';window.scrollTo(0,0);triggerFades(exp);},20);
+    } else {
+      home.classList.add('active');
+      document.getElementById('nav-home').classList.add('active');
+      setTimeout(()=>{
+        home.style.opacity='1';
+        if(section){
+          setTimeout(()=>{const el=document.getElementById(section);if(el)el.scrollIntoView({behavior:'smooth'});},100);
+        } else {
+          window.scrollTo(0,0);
+        }
+        triggerFades(home);
+      },20);
+    }
+  },300);
+}
+
+// ── SCROLL FADE ──
+function triggerFades(container){
+  const fades=container.querySelectorAll('.fade');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+  },{threshold:.08});
+  fades.forEach(f=>{f.classList.remove('in');obs.observe(f);});
+}
+
+// ── SKILL BARS ──
+function initSkillBars(){
+  document.querySelectorAll('.skbar').forEach(b=>{
+    new IntersectionObserver(([e])=>{
+      if(e.isIntersecting)b.style.transform=`scaleX(${b.dataset.w})`;
+    },{threshold:.3}).observe(b);
+  });
+}
+initSkillBars();
+triggerFades(document.getElementById('home-page'));
+
+// ── WORK FILTER ──
+function filterWork(el, cat){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('[data-wcat]').forEach(c=>{
+    const show=cat==='all'||c.dataset.wcat===cat;
+    c.style.opacity=show?'1':'0.15';
+    c.style.pointerEvents=show?'':'none';
+    c.style.transition='opacity .3s';
+  });
+}
+
+// ── THEME ──
+function toggleTheme(){
+  const on=document.body.classList.toggle('lm');
+  document.querySelector('.tbtn').textContent=on?'Dark':'Light';
+}
+</script>
+</body>
+</html>
