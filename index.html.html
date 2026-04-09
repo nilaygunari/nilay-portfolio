@@ -364,104 +364,182 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
   .exp-card{grid-template-columns:1fr;gap:20px;}
   .exp-stats{flex-wrap:wrap;}
 }
-/* ─── PROJECT DETAIL OVERLAY ─── */
-#proj-overlay{
-  position:fixed;inset:0;z-index:10000;
-  background:var(--bg);
-  opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .4s ease, visibility .4s ease;
-  overflow-y:auto;
+/* ─── VIDEO INTRO ─── */
+#vid-intro{
+  position:fixed;inset:0;z-index:99999;
+  background:#000;
+  display:flex;flex-direction:column;
+  transition:opacity .8s ease, visibility .8s ease;
 }
-#proj-overlay.open{opacity:1;visibility:visible;pointer-events:all;}
+#vid-intro.hide{opacity:0;visibility:hidden;pointer-events:none;}
 
-.proj-overlay-inner{
-  max-width:900px;margin:0 auto;
-  padding:100px 60px 80px;
+/* YouTube fills entire screen */
+.intro-yt{
+  position:absolute;inset:0;
+  pointer-events:none;/* prevent user interacting with YT controls */
+}
+.intro-yt iframe{
+  position:absolute;
+  /* oversized to hide YT letterbox bars */
+  top:50%;left:50%;
+  width:100vw;height:56.25vw;
+  min-height:100vh;min-width:177.78vh;
+  transform:translate(-50%,-50%);
+  border:none;
+  pointer-events:none;
 }
 
-/* Back button */
-.proj-back{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--t2);font-family:'Inter',sans-serif;
-  margin-bottom:48px;
-  transition:color .2s;
+/* Dark overlay so text is readable */
+.intro-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.2) 50%, rgba(0,0,0,.5) 100%);
+  z-index:2;
 }
-.proj-back:hover{color:var(--text);}
-.proj-back-arrow{font-size:16px;transition:transform .2s;}
-.proj-back:hover .proj-back-arrow{transform:translateX(-3px);}
 
-/* Project header */
-.proj-ov-eyebrow{font-size:10px;letter-spacing:3px;color:var(--a);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-.proj-ov-eyebrow::before{content:'';width:22px;height:1px;background:var(--a);}
-.proj-ov-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,5vw,64px);line-height:.92;letter-spacing:-2px;margin-bottom:20px;}
-.proj-ov-desc{font-size:15px;color:var(--t2);line-height:1.8;max-width:620px;margin-bottom:36px;}
-.proj-ov-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:48px;}
-.proj-ov-tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 13px;border:1px solid var(--border);border-radius:20px;color:var(--t2);}
-.proj-ov-tag.green{border-color:rgba(200,240,96,.4);color:var(--a);}
-.proj-ov-tag.orange{border-color:rgba(232,160,80,.4);color:var(--a2);}
+/* Top bar */
+.intro-topbar{
+  position:absolute;top:0;left:0;right:0;
+  padding:28px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:3;
+  opacity:0;animation:fadeUp .6s .5s forwards;
+}
+.intro-logo{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:14px;letter-spacing:2px;color:#fff;text-transform:uppercase;
+}
+.intro-skip{
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;
+  padding:8px 20px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:3px;color:rgba(255,255,255,.7);
+  background:transparent;
+  transition:all .2s;
+  display:flex;align-items:center;gap:8px;
+}
+.intro-skip:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,.08);}
+.intro-skip-count{
+  font-size:10px;color:rgba(255,255,255,.4);
+  min-width:14px;text-align:center;
+}
 
-/* Video embed */
-.proj-ov-video{
-  width:100%;border-radius:10px;overflow:hidden;
-  border:1px solid var(--border);
-  margin-bottom:48px;position:relative;
-  padding-top:56.25%;background:#000;
+/* Bottom info */
+.intro-bottom{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:40px 48px;
+  z-index:3;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  flex-wrap:wrap;gap:20px;
 }
-.proj-ov-video iframe{
-  position:absolute;top:0;left:0;width:100%;height:100%;border:none;
+.intro-info{opacity:0;animation:fadeUp .6s .8s forwards;}
+.intro-label{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(200,240,96,.8);margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
 }
-.proj-ov-novideo{
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;
-  background:var(--bg3);
+.intro-label::before{content:'';width:20px;height:1px;background:rgba(200,240,96,.8);}
+.intro-title{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(24px,4vw,48px);color:#fff;
+  line-height:.95;letter-spacing:-1px;
+  margin-bottom:10px;
 }
-.proj-ov-novideo-icon{font-size:48px;opacity:.3;}
-.proj-ov-novideo-text{font-size:11px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;}
+.intro-sub{font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.5px;}
 
-/* Content body */
-.proj-ov-section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
-.proj-ov-bullets{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:40px;}
-.proj-ov-bullets li{font-size:14px;color:var(--t2);line-height:1.75;padding-left:20px;position:relative;}
-.proj-ov-bullets li::before{content:'';position:absolute;left:0;top:10px;width:7px;height:1px;background:var(--a);}
-.proj-ov-bullets li strong{color:var(--text);font-weight:500;}
-
-/* Next project nav */
-.proj-ov-nav{
-  display:flex;gap:12px;margin-top:48px;
-  border-top:1px solid var(--border);padding-top:32px;
+/* Enter button */
+.intro-enter-wrap{opacity:0;animation:fadeUp .6s 1.1s forwards;}
+.intro-enter{
+  font-family:'Inter',sans-serif;font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;
+  padding:14px 32px;
+  background:#c8f060;color:#0d0d0d;border:none;border-radius:3px;
+  transition:opacity .2s,transform .2s;
+  display:flex;align-items:center;gap:10px;white-space:nowrap;
 }
-.proj-ov-nav-btn{
-  flex:1;border:1px solid var(--border);border-radius:8px;padding:18px 20px;
-  transition:border-color .25s,background .25s;
-  display:flex;flex-direction:column;gap:4px;
-}
-.proj-ov-nav-btn:hover{border-color:var(--bh);background:var(--bg2);}
-.proj-ov-nav-label{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;}
-.proj-ov-nav-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text);}
+.intro-enter:hover{opacity:.88;transform:translateY(-2px);}
+.intro-enter-arrow{font-size:16px;}
 
-@media(max-width:768px){
-  .proj-overlay-inner{padding:80px 24px 60px;}
+/* Progress bar at very bottom */
+.intro-progress{
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:rgba(255,255,255,.1);z-index:4;
+}
+.intro-progress-fill{
+  height:100%;background:#c8f060;width:0%;
+  transition:width linear;
+}
+
+/* Sound muted notice */
+.intro-muted{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  opacity:0;animation:fadeUp .4s .3s forwards;
+  pointer-events:none;
+}
+.intro-muted-icon{font-size:36px;opacity:.4;}
+.intro-muted-text{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.3);text-transform:uppercase;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:600px){
+  .intro-topbar,.intro-bottom{padding:20px 24px;}
+  .intro-bottom{flex-direction:column;align-items:flex-start;}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════ PROJECT DETAIL OVERLAY ═══════ -->
-<div id="proj-overlay">
-  <div class="proj-overlay-inner">
-    <div class="proj-back" onclick="closeProject()">
-      <span class="proj-back-arrow">←</span> Back to Projects
-    </div>
-    <div class="proj-ov-eyebrow" id="ov-eyebrow">Project</div>
-    <div class="proj-ov-title" id="ov-title">Project Title</div>
-    <p class="proj-ov-desc" id="ov-desc"></p>
-    <div class="proj-ov-tags" id="ov-tags"></div>
-    <div class="proj-ov-video" id="ov-video"></div>
-    <div class="proj-ov-section-title">Key Highlights</div>
-    <ul class="proj-ov-bullets" id="ov-bullets"></ul>
-    <div class="proj-ov-nav" id="ov-nav"></div>
+<!-- ═══════════ VIDEO INTRO ═══════════ -->
+<div id="vid-intro">
+
+  <!-- YouTube fullscreen (autoplay, muted, no controls) -->
+  <div class="intro-yt">
+    <iframe
+      id="intro-iframe"
+      src="https://www.youtube.com/embed/h6TeTLESiNA?autoplay=1&mute=1&controls=0&loop=1&playlist=h6TeTLESiNA&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
   </div>
+
+  <!-- Overlay gradient -->
+  <div class="intro-overlay"></div>
+
+  <!-- Muted indicator -->
+  <div class="intro-muted">
+    <div class="intro-muted-icon">🔇</div>
+    <div class="intro-muted-text">Muted · Click enter to explore</div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="intro-topbar">
+    <div class="intro-logo">Nilay Gunari</div>
+    <button class="intro-skip" onclick="enterPortfolio()" id="skip-btn">
+      Skip <span class="intro-skip-count" id="skip-count">10</span>
+    </button>
+  </div>
+
+  <!-- Bottom info + enter -->
+  <div class="intro-bottom">
+    <div class="intro-info">
+      <div class="intro-label">Portfolio · 2025</div>
+      <div class="intro-title">UX &amp; Game<br>Designer</div>
+      <div class="intro-sub">Maharashtra, India &nbsp;·&nbsp; XR · VR · AR · Cricket · Skating</div>
+    </div>
+    <div class="intro-enter-wrap">
+      <button class="intro-enter" onclick="enterPortfolio()">
+        Enter Portfolio <span class="intro-enter-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="intro-progress">
+    <div class="intro-progress-fill" id="intro-bar"></div>
+  </div>
+
 </div>
 
 <!-- SKATER CURSOR -->
@@ -580,7 +658,7 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
         <a onclick="goTo('work')" class="view-all-btn">View All Projects →</a>
       </div>
 
-      <div class="pfeat fade" onclick="openProject('firefighter')">
+      <div class="pfeat fade" onclick="window.open('https://nilayngunari.framer.website/videos1','_blank')">
         <div class="pthumb">
           <div class="pglow" style="background:radial-gradient(ellipse,#c8f060 0%,transparent 65%)"></div>
           <img style="width:100%;height:100%;object-fit:cover;opacity:.5;position:absolute;inset:0;" src="https://framerusercontent.com/images/WBQ4aOVdnyEXocUQr75BHgSFCo4.jpg?width=600" onerror="this.style.display='none'"/>
@@ -590,11 +668,11 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
         <div class="pbody">
           <div class="ptitle">Firefighter VR Training Simulator</div>
           <p class="pdesc">Step into the role of a real firefighter. Arrive at an active emergency, assess the scene, identify the fire type, and choose the correct extinguisher. High-stakes immersive training built for emergency preparedness.</p>
-          <a href="#" onclick="openProject('firefighter');return false;" class="plink">View Project →</a>
+          <a href="https://nilayngunari.framer.website/videos1" target="_blank" class="plink">Watch Video →</a>
         </div>
       </div>
 
-      <div class="pfeat fade" onclick="openProject('aquaculture')">
+      <div class="pfeat fade" onclick="window.open('https://nilayngunari.framer.website/video5','_blank')">
         <div class="pthumb">
           <div class="pglow" style="background:radial-gradient(ellipse,#e8a050 0%,transparent 65%)"></div>
           <div class="ptlabel">AR</div>
@@ -603,12 +681,12 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
         <div class="pbody">
           <div class="ptitle">Aquaculture AR — Garware Technical Fibres</div>
           <p class="pdesc">Interactive AR for virtual product knowledge at the world's largest aquaculture cage supplier. Presented at <strong style="color:var(--text)">Aqua-Nor, Norway</strong> — the world's largest aquaculture tech exhibition.</p>
-          <a href="#" onclick="openProject('aquaculture');return false;" class="plink">View Project →</a>
+          <a href="https://nilayngunari.framer.website/video5" target="_blank" class="plink">Watch Video →</a>
         </div>
       </div>
 
       <div class="pgrid fade">
-        <div class="pcard" onclick="openProject('bomb')">
+        <div class="pcard" onclick="window.open('https://nilayngunari.framer.website/vr1','_blank')">
           <div class="pcthumb"><div style="position:absolute;inset:0;background:radial-gradient(ellipse,rgba(200,240,96,.1) 0%,transparent 70%)"></div><div class="pctl">EOD</div><div class="pbadge bg" style="top:8px;left:8px;position:absolute;font-size:8px;padding:2px 8px;">VR Research</div></div>
           <div class="pcbody"><div class="pctitle">Bomb Disposal VR Training</div><p class="pcdesc">Immersive, repeatable VR strategies for EOD units in India.</p></div>
         </div>
@@ -710,7 +788,7 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
       <h2 class="stitle">Immersive Training & Simulation</h2>
 
       <div class="feat-row fade" data-wcat="vr">
-        <div class="feat-card tall" onclick="openProject('firefighter')">
+        <div class="feat-card tall" onclick="window.open('https://nilayngunari.framer.website/videos1','_blank')">
           <div class="feat-thumb">
             <div class="glow" style="background:radial-gradient(ellipse,#c8f060 0%,transparent 65%)"></div>
             <img class="thumb-img" src="https://framerusercontent.com/images/WBQ4aOVdnyEXocUQr75BHgSFCo4.jpg?width=700" alt="" onerror="this.style.display='none'"/>
@@ -721,10 +799,10 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
             <div class="feat-cat">Immersive Training · Unreal Engine</div>
             <div class="feat-title">Firefighter VR Training Simulator</div>
             <p class="feat-desc">Step into the role of a real firefighter. Arrive at an active emergency, assess the scene, identify the fire type, and choose the correct extinguisher. High-stakes immersive training built for emergency preparedness.</p>
-            <a href="#" onclick="openProject('firefighter');return false;" class="feat-lnk">View Project →</a>
+            <a href="https://nilayngunari.framer.website/videos1" target="_blank" class="feat-lnk">Watch Video →</a>
           </div>
         </div>
-        <div class="feat-card tall" onclick="openProject('aquaculture')">
+        <div class="feat-card tall" onclick="window.open('https://nilayngunari.framer.website/video5','_blank')">
           <div class="feat-thumb">
             <div class="glow" style="background:radial-gradient(ellipse,#e8a050 0%,transparent 65%)"></div>
             
@@ -734,12 +812,12 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
             <div class="feat-cat">Augmented Reality · Garware Technical Fibres</div>
             <div class="feat-title">Aquaculture AR Product Demo</div>
             <p class="feat-desc">Interactive AR for virtual product knowledge at the world's largest aquaculture cage supplier. Presented at <strong style="color:var(--text)">Aqua-Nor, Norway</strong> — the world's largest aquaculture tech exhibition.</p>
-            <a href="#" onclick="openProject('aquaculture');return false;" class="feat-lnk">View Project →</a>
+            <a href="https://nilayngunari.framer.website/video5" target="_blank" class="feat-lnk">Watch Video →</a>
           </div>
         </div>
       </div>
 
-      <div class="wide-card fade" data-wcat="vr" onclick="openProject('bomb')">
+      <div class="wide-card fade" data-wcat="vr" onclick="window.open('https://nilayngunari.framer.website/vr1','_blank')">
         <div class="wide-thumb">
           <div class="glow" style="background:radial-gradient(ellipse,#c8f060 0%,transparent 65%)"></div>
           <img class="thumb-img" src="https://framerusercontent.com/images/XZL3w33yPWLbvXjn9b062swZPwk.png?width=500" alt="" onerror="this.style.display='none'"/>
@@ -749,7 +827,7 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
           <div class="feat-cat">VR Training Strategy · Safety & Defence</div>
           <div class="feat-title" style="font-size:18px;margin-bottom:10px;">Bomb Disposal VR Training</div>
           <p class="feat-desc">Tackles the critical challenge of bomb disposal training — addressing high cost, risk, and limited realism. Identifies key gaps and transforms them into immersive, repeatable, and safe VR training strategies for EOD units in India.</p>
-          <a href="#" onclick="openProject('bomb');return false;" class="feat-lnk">View Project →</a>
+          <a href="https://nilayngunari.framer.website/vr1" target="_blank" class="feat-lnk">View Project →</a>
         </div>
       </div>
 
@@ -763,7 +841,7 @@ footer{position:relative;z-index:10;padding:18px 60px;border-top:1px solid var(-
           <div class="feat-cat">Game Engine · Blueprint Scripting</div>
           <div class="feat-title" style="font-size:18px;margin-bottom:10px;">Unreal Engine Foundations</div>
           <p class="feat-desc">Building strong foundations in Unreal Engine by learning core functions and Blueprint scripting. Hands-on error fixing, creating interactions, and understanding game logic for advanced VR and gameplay development.</p>
-          <a href="#" onclick="openProject('unreal');return false;" class="feat-lnk">View Project →</a>
+          <a href="https://nilayngunari.framer.website/video3" target="_blank" class="feat-lnk">See Video →</a>
         </div>
       </div>
     </section>
@@ -1127,168 +1205,55 @@ function toggleTheme(){
   document.querySelector('.tbtn').textContent=on?'Dark':'Light';
 }
 
-// ── PROJECT DATA ──
-const PROJECTS = {
-  firefighter: {
-    eyebrow: 'VR Training · Unreal Engine',
-    title: 'Firefighter VR Training Simulator',
-    desc: 'Step into the role of a real firefighter. In this VR training mission, you arrive at an active emergency scene — assess the situation, identify the fire type, understand the environment, and choose the correct fire extinguisher. Your decisions determine the outcome. Learn to handle fire safely, act under pressure, and master the right extinguisher for every fire scenario.',
-    tags: [
-      {label:'VR Training', cls:'green'},
-      {label:'Unreal Engine 5', cls:'green'},
-      {label:'Game Design', cls:''},
-      {label:'Emergency Sim', cls:'orange'},
-    ],
-    youtube: 'GfATS90AyQo',
-    bullets: [
-      'Designed the full VR training experience inside <strong>Unreal Engine 5</strong> with Blueprint scripting.',
-      'Created realistic fire emergency scenarios with multiple fire types — each requiring a different extinguisher.',
-      'Implemented decision-based outcome system — wrong choices lead to scenario failure, reinforcing learning.',
-      'Built intuitive VR interactions for picking up, aiming, and operating different extinguisher types.',
-      'Focused on high-pressure UX design — simulating real emergency time constraints and environmental hazards.',
-    ],
-    next: 'aquaculture',
-    prev: 'bomb',
-  },
-  aquaculture: {
-    eyebrow: 'AR Development · Internship · Garware Technical Fibres',
-    title: 'Aquaculture AR Product Demo',
-    desc: 'Advanced aquaculture solutions through interactive AR experiences, allowing users to get virtual product knowledge. Built during my internship at Garware Technical Fibres Ltd. — the world\'s largest supplier of aquaculture cages. This AR model was presented at Aqua-Nor, the world\'s largest aquaculture technology exhibition in Norway.',
-    tags: [
-      {label:'AR Development', cls:'orange'},
-      {label:'Internship', cls:'orange'},
-      {label:'UX Design', cls:''},
-      {label:'User Research', cls:''},
-      {label:'Aqua-Nor Norway 🌍', cls:'green'},
-    ],
-    youtube: 'NRSt2jQSE5w',
-    bullets: [
-      'Developed an immersive AR model showcasing Garware\'s aquaculture textile solutions for <strong>international stakeholders</strong>.',
-      'Conducted user research with Norwegian customers, aligning design solutions with global user needs.',
-      'Collaborated with cross-functional teams to bridge design, engineering, and business goals for AR/VR implementation.',
-      'Created a cutting-edge AR presentation that highlighted Garware\'s global capabilities and technological leadership.',
-      'Delivered the interactive AR experience at <strong>Aqua-Nor 2025, Norway</strong> — engaging international audience of industry leaders.',
-    ],
-    next: 'bomb',
-    prev: 'firefighter',
-  },
-  bomb: {
-    eyebrow: 'VR Research · Safety & Defence',
-    title: 'Bomb Disposal VR Training',
-    desc: 'This project tackles the critical challenge of bomb disposal training by addressing the high cost, risk, and limited realism of current methods. With India lacking scalable VR-based solutions, the project identifies key gaps and transforms them into immersive, repeatable, and safe VR training strategies to better prepare bomb disposal units.',
-    tags: [
-      {label:'VR Research', cls:'green'},
-      {label:'Safety & Defence', cls:'orange'},
-      {label:'Interaction Design', cls:''},
-      {label:'Systems Design', cls:''},
-    ],
-    youtube: '',
-    bullets: [
-      'Identified critical gaps in India\'s bomb disposal training infrastructure — <strong>no scalable VR solution existed</strong>.',
-      'Designed immersive, repeatable VR training strategies that simulate high-risk EOD scenarios safely.',
-      'Applied cognitive design principles to ensure training transfers to real-world performance under pressure.',
-      'Developed a framework for progressive skill-building — from basic identification to complex live-wire scenarios.',
-      'Proposed a low-cost deployment model suitable for scaling across Indian defence and police units.',
-    ],
-    next: 'unreal',
-    prev: 'aquaculture',
-  },
-  unreal: {
-    eyebrow: 'Game Engine · Blueprint Scripting',
-    title: 'Unreal Engine Foundations',
-    desc: 'This project focuses on building strong foundations in Unreal Engine by learning core functions and Blueprint scripting. Through hands-on practice fixing errors, creating interactions, and understanding game logic — the project improves problem-solving skills and prepares for more advanced VR and gameplay development.',
-    tags: [
-      {label:'Unreal Engine 5', cls:'green'},
-      {label:'Blueprint Scripting', cls:'green'},
-      {label:'Game Logic', cls:''},
-      {label:'VR Development', cls:'orange'},
-    ],
-    youtube: '',
-    bullets: [
-      'Mastered core <strong>Unreal Engine 5</strong> functions — actor placement, lighting, materials, and level design.',
-      'Built interactive Blueprint scripts from scratch — input handling, triggers, animations, and game state logic.',
-      'Hands-on debugging practice — identifying and fixing common Blueprint errors and logic faults.',
-      'Created interactive environments with dynamic objects, physics interactions, and player-driven events.',
-      'Foundation for all subsequent VR and game design projects — every simulation built on these skills.',
-    ],
-    next: 'firefighter',
-    prev: 'bomb',
-  },
-};
+// ── VIDEO INTRO ──
+(function initIntro(){
+  const intro = document.getElementById('vid-intro');
+  const bar = document.getElementById('intro-bar');
+  const skipCount = document.getElementById('skip-count');
+  if(!intro) return;
 
-const PROJECT_KEYS = ['firefighter','aquaculture','bomb','unreal'];
-
-function openProject(id) {
-  const p = PROJECTS[id];
-  if (!p) return;
-
-  // Store current project
-  document.getElementById('proj-overlay').dataset.current = id;
-
-  // Fill eyebrow
-  document.getElementById('ov-eyebrow').textContent = p.eyebrow;
-
-  // Fill title
-  document.getElementById('ov-title').textContent = p.title;
-
-  // Fill desc
-  document.getElementById('ov-desc').textContent = p.desc;
-
-  // Fill tags
-  const tagsEl = document.getElementById('ov-tags');
-  tagsEl.innerHTML = p.tags.map(t =>
-    `<span class="proj-ov-tag ${t.cls}">${t.label}</span>`
-  ).join('');
-
-  // Fill video
-  const vidEl = document.getElementById('ov-video');
-  if (p.youtube) {
-    vidEl.innerHTML = `<iframe src="https://www.youtube.com/embed/${p.youtube}?rel=0&modestbranding=1&color=white" title="${p.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
-    vidEl.style.display = 'block';
-  } else {
-    vidEl.innerHTML = `<div class="proj-ov-novideo"><div class="proj-ov-novideo-icon">🎬</div><div class="proj-ov-novideo-text">Video coming soon</div></div>`;
-    vidEl.style.paddingTop = '30%';
-  }
-
-  // Fill bullets
-  const bulletsEl = document.getElementById('ov-bullets');
-  bulletsEl.innerHTML = p.bullets.map(b =>
-    `<li>${b}</li>`
-  ).join('');
-
-  // Fill next/prev nav
-  const nextP = PROJECTS[p.next];
-  const prevP = PROJECTS[p.prev];
-  document.getElementById('ov-nav').innerHTML = `
-    <div class="proj-ov-nav-btn" onclick="openProject('${p.prev}')">
-      <span class="proj-ov-nav-label">← Previous</span>
-      <span class="proj-ov-nav-title">${prevP.title}</span>
-    </div>
-    <div class="proj-ov-nav-btn" style="text-align:right;" onclick="openProject('${p.next}')">
-      <span class="proj-ov-nav-label">Next →</span>
-      <span class="proj-ov-nav-title">${nextP.title}</span>
-    </div>
-  `;
-
-  // Open overlay
-  const ov = document.getElementById('proj-overlay');
-  ov.classList.add('open');
-  ov.scrollTop = 0;
+  // Lock scroll behind intro
   document.body.style.overflow = 'hidden';
-}
 
-function closeProject() {
-  document.getElementById('proj-overlay').classList.remove('open');
+  // Countdown skip timer — 10s
+  let remaining = 10;
+  const ticker = setInterval(()=>{
+    remaining--;
+    if(skipCount) skipCount.textContent = remaining;
+    if(remaining <= 0){
+      clearInterval(ticker);
+      if(skipCount) skipCount.textContent = '✓';
+    }
+  }, 1000);
+
+  // Progress bar — 15s full duration
+  setTimeout(()=>{
+    bar.style.transition = 'width 15s linear';
+    bar.style.width = '100%';
+  }, 300);
+
+  // Auto-enter after 15s
+  setTimeout(()=>{
+    if(intro && !intro.classList.contains('hide')) enterPortfolio();
+  }, 15000);
+})();
+
+function enterPortfolio(){
+  const intro = document.getElementById('vid-intro');
+  if(!intro || intro.classList.contains('hide')) return;
+  intro.classList.add('hide');
   document.body.style.overflow = '';
-  // Stop video
-  const vidEl = document.getElementById('ov-video');
-  if (vidEl) vidEl.innerHTML = '';
+  // Stop video by clearing iframe src
+  setTimeout(()=>{
+    const iframe = document.getElementById('intro-iframe');
+    if(iframe) iframe.src = '';
+  }, 900);
+  // Trigger home page animations
+  setTimeout(()=>{
+    triggerFades(document.getElementById('home-page'));
+    initSkillBars();
+  }, 500);
 }
-
-// Close on Escape key
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeProject();
-});
 </script>
 </body>
 </html>
